@@ -39,7 +39,19 @@ public class LocationRepository : ILocationRepository
         if(!locations.Any()){
             return null;
         }
-        return await locations.ToListAsync();
+        if(!string.IsNullOrWhiteSpace(query.SortBy))
+        {
+            if(query.SortBy.Equals("City", StringComparison.OrdinalIgnoreCase)){
+                locations = query.IsDescending ? locations.OrderByDescending(s=>s.City) : locations.OrderBy(s=>s.City);
+            }
+            if(query.SortBy.Equals("Date", StringComparison.OrdinalIgnoreCase)){
+                locations = query.IsDescending ? locations.OrderByDescending(s=>s.LastCheck) : locations.OrderBy(s=>s.LastCheck);
+            }
+        }
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+
+        return await locations.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
 
     
