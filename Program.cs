@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using TodoApi.Interfaces;
 using TodoApi.Models;
 using TodoApi.Repository;
+using TodoApi.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +61,7 @@ builder.Services.AddAuthentication(options=>{
 
 builder.Services.AddScoped<IGuardRepository, GuardRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
